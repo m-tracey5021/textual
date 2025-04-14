@@ -1,0 +1,54 @@
+<mat-form-field>
+    <mat-label>Select Target Language</mat-label>
+    <mat-select [(ngModel)]="selectedLanguage">
+      @for (language of languages; track language) {
+        <mat-option [value]="language">{{language}}</mat-option>
+      }
+    </mat-select>
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Select Mode</mat-label>
+    <mat-select [(ngModel)]="selectedLanguage">
+      @for (mode of modes; track mode) {
+        <mat-option [value]="mode">{{mode}}</mat-option>
+      }
+    </mat-select>
+</mat-form-field>
+
+<mat-tree #tree [dataSource]="dataSource" [childrenAccessor]="childrenAccessor">
+    <!-- This is the tree node template for leaf nodes -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
+        <!-- use a disabled button to provide padding for tree leaf -->
+        <button mat-icon-button disabled></button>
+        <button mat-button (click)="populateTextBox(node.type, node.name)">
+            {{node.name}}
+        </button>
+        
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding matTreeNodeToggle
+                   [cdkTreeNodeTypeaheadLabel]="node.name">
+        <button mat-icon-button matTreeNodeToggle
+              [attr.aria-label]="'Toggle ' + node.name">
+            <mat-icon class="mat-icon-rtl-mirror">
+                {{tree.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+        </button>
+        {{node.name}}
+        
+    </mat-tree-node>
+</mat-tree>
+  
+<button mat-button (click)="populateExerciseTree()">Render Menu</button>
+
+<button mat-button (click)="generateOutput()">Generate Output</button>
+
+<form class="reader-container">  
+    <mat-form-field class="reader-container-full-width">
+        <mat-label>Language Input/Output</mat-label>
+        <textarea matInput
+              [(ngModel)]="text"
+              name="text"></textarea>
+    </mat-form-field>
+</form>
+  
