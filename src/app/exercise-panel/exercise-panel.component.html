@@ -1,0 +1,11 @@
+<form class="reader-container">  
+    <div *ngFor="let item of exercises; let i = index" class="reader-container-full-width">
+        <mat-form-field appearance="fill" class="reader-container-full-width">
+            <mat-label>Exercise {{ i + 1 }}</mat-label>
+            <textarea matInput
+                    [(ngModel)]="exercises[i]"
+                    [name]="'text' + i">
+            </textarea>
+        </mat-form-field>
+    </div>
+</form>

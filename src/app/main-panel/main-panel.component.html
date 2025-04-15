@@ -43,12 +43,21 @@
 
 <button mat-button (click)="generateOutput()">Generate Output</button>
 
-<form class="reader-container">  
-    <mat-form-field class="reader-container-full-width">
-        <mat-label>Language Input/Output</mat-label>
-        <textarea matInput
-              [(ngModel)]="text"
-              name="text"></textarea>
-    </mat-form-field>
+<form class="reader-container">
+    <div *ngIf="showPassage">
+        <mat-form-field class="reader-container-full-width">
+            <mat-label>Language Input/Output</mat-label>
+            <textarea matInput
+                  [(ngModel)]="passage"
+                  name="text"></textarea>
+        </mat-form-field>
+    </div>  
+    <div *ngIf="showExercises">
+        <app-exercise-panel [exercises]="exerciseSentences"></app-exercise-panel>
+    </div>  
+    <div *ngIf="showVocab">
+        <app-vocabulary-panel [pairings]="vocabulary"></app-vocabulary-panel>
+    </div> 
+    
 </form>
   

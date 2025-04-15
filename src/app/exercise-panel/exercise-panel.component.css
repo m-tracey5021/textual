@@ -1,0 +1,9 @@
+.reader-container {
+    width: 100%; /* or 400px, or whatever you need */
+    height: 100%;
+    max-width: 1200px;
+}
+  
+.reader-container-full-width {
+    width: 100%;
+}

@@ -15,12 +15,16 @@ import {MatTreeModule} from '@angular/material/tree';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import { ExerciseTreeComponent } from './exercise-tree/exercise-tree.component';
+import { ExercisePanelComponent } from './exercise-panel/exercise-panel.component';
+import { VocabularyPanelComponent } from './vocabulary-panel/vocabulary-panel.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPanelComponent,
-    ExerciseTreeComponent
+    ExerciseTreeComponent,
+    ExercisePanelComponent,
+    VocabularyPanelComponent
   ],
   imports: [
     BrowserModule,

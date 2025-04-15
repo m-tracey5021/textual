@@ -16,10 +16,11 @@ interface Passage {
 }
 
 interface Exercise {
+    name: string, 
     sentences: string[]
 }
 
-interface VocabularyPairing {
+export interface VocabularyPairing {
     word: string
     meaning: string
 }
@@ -44,9 +45,11 @@ interface Context {
 export class MainPanelComponent {
 
     apiEndPoint = END_POINT; 
+    apiContextEndPoint = GET_CONTEXT_END_POINT;
+
     passageSize = 'five';
 
-    text: string = '';
+    
     selectedLanguage: string = '';
     selectedMode: string = '';
     
@@ -70,7 +73,15 @@ export class MainPanelComponent {
     context: Context | null = null;
     dataSource: TreeNode[] = [];
 
-    apiContextEndPoint = GET_CONTEXT_END_POINT;
+    showPassage = false;
+    showExercises = false;
+    showVocab = false;
+
+    passage: string = '';
+    exerciseSentences: string[] = [];
+    vocabulary: VocabularyPairing[] = [];
+
+    
 
     constructor(private http: HttpClient) {}
 
@@ -139,24 +150,24 @@ export class MainPanelComponent {
 
         const body = { message: prompt };
     
-        this.http.post<{ response: string }>(this.apiEndPoint, body).pipe(
-            tap(() => {
-                this.text = 'loading';
-            }),
-            finalize(() => {
-                // this.text = ''; // Always runs, whether success or error
-            })
+        // this.http.post<{ response: string }>(this.apiEndPoint, body).pipe(
+        //     tap(() => {
+        //         this.text = 'loading';
+        //     }),
+        //     finalize(() => {
+        //         // this.text = ''; // Always runs, whether success or error
+        //     })
 
-        ).subscribe({
-            next: (data) => {
-                console.log(data)
-                this.text = data.response; // Update the textarea with the response
-            },
-            error: (err) => {
-                this.text = 'error: ' + err;
-                console.error('Error posting text:', err);
-            }
-        });
+        // ).subscribe({
+        //     next: (data) => {
+        //         console.log(data)
+        //         this.text = data.response; // Update the textarea with the response
+        //     },
+        //     error: (err) => {
+        //         this.text = 'error: ' + err;
+        //         console.error('Error posting text:', err);
+        //     }
+        // });
     }
     populateTextBox(type: string, name: string) {
 
@@ -174,17 +185,27 @@ export class MainPanelComponent {
 
                 console.log(selectedPassage);
 
-                this.text = selectedPassage.content;
+                this.passage = selectedPassage.content;
+
+                // TODO a new component
+                this.showPassage = true;
+                this.showExercises = false;
+                this.showVocab = false;
             }
         }
         if (type == 'exercise') {
 
-            // var selected = this.context?.exercises.find(x => x.name = name);
 
-            // if (selected) {
+            var selected = this.context?.exercises.find(x => x.name = name);
 
-            //     this.text = selected.content;
-            // }
+            if (selected) {
+
+                this.exerciseSentences = selected.sentences;
+
+                this.showPassage = false;
+                this.showExercises = true;
+                this.showVocab = false;
+            }
         }
         if (type == 'vocab') {
 
@@ -194,13 +215,20 @@ export class MainPanelComponent {
 
                 console.log(selectedVocab);
 
-                var totalStr = '';
+                this.vocabulary = selectedVocab.pairings;
 
-                for(const pairing of selectedVocab.pairings) {
+                this.showPassage = false;
+                this.showExercises = false;
+                this.showVocab = true;
 
-                    totalStr += pairing.word + ' -> ' + pairing.meaning + '\n';
-                }
-                this.text = totalStr;
+
+                // var totalStr = '';
+
+                // for(const pairing of selectedVocab.pairings) {
+
+                //     totalStr += pairing.word + ' -> ' + pairing.meaning + '\n';
+                // }
+                // this.passage = totalStr;
             }
         }
 
